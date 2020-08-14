@@ -1,16 +1,25 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
 type UseSharedState = typeof useState;
+type SetState<T> = Dispatch<SetStateAction<T>>;
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+const isFunction = (func: any): func is Function => typeof func === 'function';
 
 export const create = <T>() => {
   let sharedState: T;
-  const setters = new Set<Dispatch<SetStateAction<T>>>();
+  const setters = new Set<SetState<T>>();
 
   const useSharedState: UseSharedState = (initialState?: T) => {
     const [state, setState] = useState<T>(() => {
       if (!sharedState) {
-        sharedState =
-          typeof initialState === 'function' ? initialState() : initialState;
+        sharedState = isFunction(initialState) ? initialState() : initialState;
       }
       return sharedState;
     });
@@ -22,16 +31,16 @@ export const create = <T>() => {
       };
     }, [setState]);
 
-    useEffect(() => {
-      sharedState = state;
+    const setStateWrapper: SetState<T> = useCallback(newState => {
       setters.forEach(set => {
-        if (set !== setState) {
-          set(sharedState);
-        }
+        set(prevState => {
+          sharedState = isFunction(newState) ? newState(prevState) : newState;
+          return sharedState;
+        });
       });
-    }, [state]);
+    }, []);
 
-    return [state, setState] as any;
+    return [state, setStateWrapper] as any;
   };
 
   return useSharedState;
