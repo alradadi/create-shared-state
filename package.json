@@ -1,0 +1,40 @@
+{
+  "name": "create-shared-state",
+  "version": "1.0.0",
+  "description": "A react hook that is like useState but state is shared instead",
+  "files": [
+    "dist/",
+    "LICENSE",
+    "README.md"
+  ],
+  "main": "dist/index.js",
+  "types": "dist",
+  "scripts": {
+    "build": "rm -rf ./dist && tsc",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "react",
+    "state",
+    "hook",
+    "useState",
+    "shared",
+    "global"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:alradadi/create-shared-state.git"
+  },
+  "author": "abdul@radadi.me",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/react": "^16.9.43",
+    "eslint": "^7.5.0",
+    "eslint-config-rn-ts": "^1.2.0",
+    "react": "^16.13.1",
+    "typescript": "^3.9.7"
+  },
+  "peerDependencies": {
+    "react": ">=16"
+  }
+}
