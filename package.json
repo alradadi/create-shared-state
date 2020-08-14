@@ -1,6 +1,6 @@
 {
   "name": "create-shared-state",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A react hook that is like useState but state is shared instead",
   "files": [
     "dist/",
