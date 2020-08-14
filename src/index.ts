@@ -33,10 +33,9 @@ export const create = <T>() => {
 
     const setStateWrapper: SetState<T> = useCallback(newState => {
       setters.forEach(set => {
-        set(prevState => {
-          sharedState = isFunction(newState) ? newState(prevState) : newState;
-          return sharedState;
-        });
+        set(prevState =>
+          isFunction(newState) ? newState(prevState) : newState,
+        );
       });
     }, []);
 
